@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bolsa de Empleos Paraguay</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: #008069;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .job-card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .job-title {
+            color: #333;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .job-location {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #25D366;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #1da851;
+        }
+
+        .date {
+            font-size: 0.8em;
+            color: #999;
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>🇵🇾 Empleos del Día</h1>
+            <p>Únete a nuestro canal de WhatsApp para más alertas</p>
+        </div>
+
+        <!-- Aquí se cargarán las ofertas automáticamente -->
+        <div id="job-list">Cargando ofertas...</div>
+
+    </div>
+
+    <script>
+        // Esta función lee el archivo de datos
+        fetch('ofertas.json')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('job-list');
+                container.innerHTML = ''; // Limpiar mensaje de carga
+
+                // Recorremos las ofertas (las más nuevas primero si las ordenas en el JSON)
+                data.forEach(job => {
+                    const card = `
+                        <div class="job-card">
+                            <span class="date">${job.fecha}</span>
+                            <div class="job-title">${job.titulo}</div>
+                            <div class="job-location">📍 ${job.ubicacion}</div>
+                            <p>${job.descripcion}</p>
+                            <a href="${job.link}" class="btn" target="_blank">Postularse / Ver Contacto</a>
+                        </div>
+                    `;
+                    container.innerHTML += card;
+                });
+            })
+            .catch(error => {
+                document.getElementById('job-list').innerHTML = 'Error cargando ofertas.';
+            });
+    </script>
+</body>
+
+</html>
